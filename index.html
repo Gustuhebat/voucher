@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voucher Kuota</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f5f5f5;
+      font-family: 'Poppins', sans-serif;
+      flex-direction: column;
+    }
+
+    .hint {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.3em;
+      color: #daf26e;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .card {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+      background: white;
+    }
+
+    #confess {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2em;
+      color: rgb(176, 244, 4);
+      z-index: 0; /* di bawah canvas */
+      padding: 10px;
+      font-weight: 600;
+    }
+
+    #voucherImg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    #maskCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1; /* di atas teks & gambar */
+    }
+  </style>
+</head>
+<body>
+  <div class="hint">🎁Gosok Untuk Klaim Voucher</div>
+  
+  <div class="card">
+    <!-- gambar di dalam voucher -->
+    <img id="voucherImg" src="https://i.ibb.co/5k6STsj/love-bouquet.png" alt="Love Image">
+    <div id="confess">💌 Tapi Boong, cuma mau bilang hai sayang💕</div>
+    <canvas id="maskCanvas"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("maskCanvas");
+    const ctx = canvas.getContext("2d");
+    const card = document.querySelector(".card");
+
+    // ukuran canvas sesuai kartu
+    function resizeCanvas() {
+      canvas.width = card.clientWidth;
+      canvas.height = card.clientHeight;
+      drawMask();
+    }
+
+    function drawMask() {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#bbb"; // warna abu-abu voucher
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // fungsi menghapus (gosok)
+    function eraseCircle(x, y, radius) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = x - rect.left;
+      const cy = y - rect.top;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // event mouse
+    let scratching = false;
+    canvas.addEventListener("mousedown", () => scratching = true);
+    canvas.addEventListener("mouseup", () => scratching = false);
+    canvas.addEventListener("mousemove", (e) => {
+      if (scratching) eraseCircle(e.clientX, e.clientY, 20);
+    });
+
+    // event touch (untuk HP)
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      scratching = true;
+    });
+    canvas.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      scratching = false;
+    });
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (scratching) {
+        const touch = e.touches[0];
+        eraseCircle(touch.clientX, touch.clientY, 20);
+      }
+    });
+  </script>
+</body>
+</html>
