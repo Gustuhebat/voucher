@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voucher Kuota</title>
+  <title>Voucher</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
@@ -20,7 +20,7 @@
     .hint {
       font-family: 'Pacifico', cursive;
       font-size: 1.3em;
-      color: #daf26e;
+      color: #fb0808;
       margin-bottom: 15px;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
       animation: pulse 1.5s infinite;
@@ -45,39 +45,29 @@
 
     #confess {
       position: absolute;
-      top: 60%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 1.2em;
-      color: rgb(176, 244, 4);
+      color: rgb(76, 46, 248);
       z-index: 0; /* di bawah canvas */
       padding: 10px;
       font-weight: 600;
-    }
-
-    #voucherImg {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
     }
 
     #maskCanvas {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 1; /* di atas teks & gambar */
+      z-index: 1; /* di atas teks */
     }
   </style>
 </head>
 <body>
-  <div class="hint">🎁Gosok Untuk Klaim Voucher</div>
+  <div class="hint">🎁 Gosok Di Sini Untuk Klaim Voucher</div>
   
   <div class="card">
-    <!-- gambar di dalam voucher -->
-    <img id="voucherImg" src="https://i.ibb.co/5k6STsj/love-bouquet.png" alt="Love Image">
-    <div id="confess">💌 Tapi Boong, cuma mau bilang hai sayang💕</div>
+    <div id="confess">💌Tapi Boong, Cuma Mau Bilang Hi Sayangg💕</div>
     <canvas id="maskCanvas"></canvas>
   </div>
 
